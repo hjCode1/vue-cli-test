@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- props로 상위컴포넌트(root)에서 데이터를 내려받음 -->
+        <app-header v-bind:propsdata="num"></app-header>
+        <!-- 2. pass라는 이벤트 받으면 deliverNum 실행 -->
+        <app-content v-on:pass="deliverNum"></app-content>
+    </div>
+    
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        var appHeader = {
+            template: '<div>Header</div>',
+            props: ['propsdata']
+        }
+        var appContent = {
+            template: '<div>Content<button v-on:click="passNum">pass</button></div>',
+            methods: {
+                passNum: function() {
+                    // 1. pass라는 이벤트에 10을 인자로 넘김
+                    this.$emit('pass', 10);
+                }
+            }
+        }
+
+        new Vue({
+            el: '#app',
+            components: {
+                'app-header': appHeader,
+                'app-content': appContent
+            },
+            data: {
+                num: 0
+            },
+            methods: {
+                // 3. deliverNum의 인자(val)로 10을 받고 num에 대입
+                deliverNum: function(val){
+                    this.num = val;
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
